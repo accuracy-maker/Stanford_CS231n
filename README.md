@@ -6,13 +6,13 @@ My self-learning of CS231n
 
 I have finished the KNN part, here is the code link: [KNN](https://drive.google.com/file/d/1ZtpfPpl0CZ6OLZwZCoIXTwAr81ZsRfxC/view?usp=sharing)
 
-Now add to the SVM and Softmax part: [Softmax](https://drive.google.com/file/d/1Y_O9Q-owA9B6xFr_rCubDk_LY4jJT8O2/view?usp=sharing), [SVM](https://drive.google.com/file/d/1CTd4WN_opQON1ZrYSB5_AQIf8lj6QVOw/view?usp=sharing)
+Now add to the SVM and Softmax part: [Softmax](https://drive.google.com/file/d/1Y_O9Q-owA9B6xFr_rCubDk_LY4jJT8O2/view?usp=sharing), [SVM](https://drive.google.com/file/d/1CTd4WN_opQON1ZrYSB5_AQIf8lj6QVOw/view?usp=sharing), [two_layer_network](https://colab.research.google.com/drive/1pONo9zI6Ym2mtPEcIB3MmcpWGW_PjcRl#scrollTo=9063768c)
 
 In the assignment 1, I have learned a lot of new knowledage and set a futther understanding of gradient of loss function. I was used to use `loss.backward()` and `optimizer.step` in Pytorch to compute the loss and update the parameters of a loss function `f`. I was never focusing on the math behind this before. At present, I have a very intutive thoughts on loss function and gradient.
 
 ### Gradient
 
-Many people learning AI must know the stotistic gradient descent (SGD) algorithm and are familar with concepts such as derivatives and gradient. However, I was confused about gradient everytime when I start to think about the details in graident descent. Why the gradient is the steepest direction of the function space? Why not other directional vector. Now, I figure it out. As we all know that every space in the university can be modeled by axis (meta vectors) and their combiantion. In deep learning setting, we want compute the gradient of loss function $L(W) = F(W)$, we need to update the $W$ in it's dimention space. 
+Many people learning AI must know the stotistic gradient descent (SGD) algorithm and are familar with concepts such as derivatives and gradient. However, I was confused about gradient everytime when I start to think about the details in graident descent. Why the gradient is the steepest direction of the function space? Why not other directional vector. Now, I figure it out. As we all know that every space in the university can be modeled by axis (meta vectors) and their combiantion. In deep learning setting, we want compute the gradient of loss function $L(W) = F(W)$, we need to update the $W$ in it's dimention space.
 
 $$
 W = \begin{bmatrix} W_x \\ W_y \\ W_z \\ ... \end{bmatrix}
@@ -26,10 +26,9 @@ $$
 
 where every $\nabla L(W_i)$ is a direction vetor of this parameters' space that has both direction and scalar value. Given them, the largest scaler value is $\sqrt{\sum_i \nabla L(W_i)^2}$ and the direction is the combination of all vetors. It's every easy to think when only 2 dimentions.
 
+#### Compute the Gradient
 
-### Compute the Gradient
-
-There are two methods to compute the gradient of a function: a slow, approximate but easy way  `numerical gradient` and a fast exact but more error-prone way  `analytic gradient`. 
+There are two methods to compute the gradient of a function: a slow, approximate but easy way  `numerical gradient` and a fast exact but more error-prone way  `analytic gradient`.
 
 #### Numerical Gradient
 
@@ -313,7 +312,6 @@ $$
 L_i = P * X_i = \sum_j \frac{e^{s_j} * X_i}{\sum_j e^{s_j}}
 $$
 
-
 ```python
 def softmax_loss_naive(W, X, y, reg):
     """
@@ -362,7 +360,7 @@ def softmax_loss_naive(W, X, y, reg):
     return loss, dW
 ```
 
-Similar to SVM, we can use matrix operation to accelerate the speed. We can learn from the chain of thought of SVM and find that there are some weights multipling the $X_i$, which is [P-1, P , P] (if there are 3 classes). 
+Similar to SVM, we can use matrix operation to accelerate the speed. We can learn from the chain of thought of SVM and find that there are some weights multipling the $X_i$, which is [P-1, P , P] (if there are 3 classes).
 
 Therefore, it's easily to implement this approach:
 
@@ -402,13 +400,20 @@ def softmax_loss_vectorized(W, X, y, reg):
 
 ```
 
-So, we can conclude that: 
+So, we can conclude that:
 
 - think of how many kind of parameters we should consider
 - must use the $X_i$ to dot product something about score function
 
+### Backpropagation
+
+#### Jacobian Matrix
+
+[Jacobian Wiki](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant)
 
 ## Reference
 
 - https://cs231n.github.io/optimization-1/
 - https://cs231n.github.io/linear-classify/
+- http://vision.stanford.edu/teaching/cs231n/handouts/linear-backprop.pdf
+- http://cs231n.github.io/optimization-2
